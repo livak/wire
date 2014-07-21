@@ -40,6 +40,10 @@ namespace Wire
             double povrsinaUtora;
             double presjek;
             int slojnost = radio_Slojnost1.IsChecked.Value ? 1 : 2;
+
+            int from = drop_From.SelectedIndex;
+            int to = drop_To.SelectedIndex;
+
             var currentSeparator = System.Threading.Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator;
             int.TryParse(this.tbx_BrojZavoja.Text, out brojZavoja);
             int.TryParse(this.tbx_MaxOdstupanje.Text, out maxOdstupanje);
@@ -48,7 +52,7 @@ namespace Wire
 
             var result = new List<ResultItem>();
 
-            for (int i = 0; i < 31; i++)
+            for (int i = from; i <= to; i++)
             {
                 for (int j = 1; j < 11; j++)
                 {
@@ -69,7 +73,7 @@ namespace Wire
                 }
             }
             result.Add(new ResultItem());
-            for (int i = 0; i < 31 - 3; i++)
+            for (int i = from; i <= to - 3; i++)
             {
                 for (int j = 1; j < 11; j++)
                 {
@@ -100,7 +104,7 @@ namespace Wire
             this.grid_Rezultat.ItemsSource = result;
         }
 
-        static List<double> Zice = new List<double> 
+        public static List<double> Zice = new List<double> 
         { 
             .14,    .16,    .18,    .2,     .224,   .25,    .28,    .3, 
             .315,   .335,   .355,   .375,   .4,     .425,   .45,    .475, 
