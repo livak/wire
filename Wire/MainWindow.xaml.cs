@@ -44,6 +44,8 @@ namespace Wire
             int from = drop_From.SelectedIndex;
             int to = drop_To.SelectedIndex;
 
+            bool sveKombinacije = cbx_PrikaziSve.IsChecked ?? false;
+
             var currentSeparator = System.Threading.Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator;
             int.TryParse(this.tbx_BrojZavoja.Text, out brojZavoja);
             int.TryParse(this.tbx_MaxOdstupanje.Text, out maxOdstupanje);
@@ -73,12 +75,14 @@ namespace Wire
                 }
             }
             result.Add(new ResultItem());
-            for (int i = from; i <= to - 3; i++)
+
+            var maxRazmak = sveKombinacije ? 3 : 1; 
+            for (int i = from; i <= to - maxRazmak; i++)
             {
                 for (int j = 1; j < 11; j++)
                 {
                     var noviPresjek1 = Matrica[i, j];
-                    for (int k = i + 1; k < i + 4; k++)
+                    for (int k = i + 1; k < i + maxRazmak + 1; k++)
                     {
                         for (int l = 1; l < 11; l++)
                         {

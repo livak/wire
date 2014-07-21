@@ -7,7 +7,7 @@
         <StackPanel>
             <StackPanel Orientation="Horizontal">
                 <Label Content="Traženi presjek:" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="100"/>
-                <TextBox Name="tbx_Presjek" Text="0.315" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="120" />
+                <TextBox Name="tbx_Presjek" Text="0.7209" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="120" />
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Odaberi slojnost:"></Label>
                     <StackPanel Orientation="Horizontal">
@@ -18,7 +18,7 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <Label Content="Broj zavoja:" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="100"/>
-                <TextBox Name="tbx_BrojZavoja" Text="50" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="120" />
+                <TextBox Name="tbx_BrojZavoja" Text="45" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="120" />
                 <StackPanel Orientation="Horizontal">
                     <Label>Odaberi raspon promjera žica od:</Label>
                     <ComboBox Name="drop_From" SelectedIndex="4" ItemsSource="{Binding Source={x:Static local:MainWindow.Zice}}"></ComboBox>
@@ -26,13 +26,10 @@
                     <ComboBox Name="drop_To" SelectedIndex="29" ItemsSource="{Binding Source={x:Static local:MainWindow.Zice}}"></ComboBox>
                 </StackPanel>
             </StackPanel>
-            <!--<StackPanel Orientation="Horizontal">
-                <Label Content="Punjenje:" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="100"/>
-                <TextBox Name="tbx_Punjenje" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="120" KeyUp="TextBox_KeyUp" />
-            </StackPanel>-->
             <StackPanel Orientation="Horizontal">
                 <Label Content="Površina utora:" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="100"/>
                 <TextBox Name="tbx_PovrsinaUtora" Text="80.1" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="120" />
+                <CheckBox Name="cbx_PrikaziSve" Content="Prikaži sve kombinacije" VerticalAlignment="Center" Margin="5,0,0,0"></CheckBox>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <Label Content="Max odstupanje:" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="100"/>
