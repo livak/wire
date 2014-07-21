@@ -1,0 +1,113 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+
+namespace Wire
+{
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
+    {
+        public MainWindow()
+        {
+            InitializeComponent();
+            for (int i = 0; i < Zice.Count; i++)
+            {
+                Matrica[i, 0] = Zice[i];
+                for (int j = 1; j < 11; j++)
+                {
+                    Matrica[i, j] = Math.Pow(Zice[i] / 2, 2) * Math.PI * j;
+                }
+            }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            int brojZavoja;
+            int maxOdstupanje;
+            double povrsinaUtora;
+            double presjek;
+            int slojnost = radio_Slojnost1.IsChecked.Value ? 1 : 2;
+            var currentSeparator = System.Threading.Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator;
+            int.TryParse(this.tbx_BrojZavoja.Text, out brojZavoja);
+            int.TryParse(this.tbx_MaxOdstupanje.Text, out maxOdstupanje);
+            double.TryParse(this.tbx_PovrsinaUtora.Text.Replace(".", currentSeparator).Replace(",", currentSeparator), out povrsinaUtora);
+            double.TryParse(this.tbx_Presjek.Text.Replace(".", currentSeparator).Replace(",", currentSeparator), out presjek);
+
+            var result = new List<ResultItem>();
+
+            for (int i = 0; i < 31; i++)
+            {
+                for (int j = 1; j < 11; j++)
+                {
+                    var noviPresjek = Matrica[i, j];
+                    var odstupanje = (Math.Abs(noviPresjek - presjek) / presjek) * 100;
+
+                    if (odstupanje < maxOdstupanje)
+                    {
+                        result.Add(
+                            new ResultItem
+                            {
+                                NoviPresjek = noviPresjek,
+                                Odstupanje = odstupanje,
+                                Punjenje = 100 * slojnost * brojZavoja * noviPresjek / povrsinaUtora,
+                                Zica = j + " x " + Matrica[i, 0]
+                            });
+                    }
+                }
+            }
+            result.Add(new ResultItem());
+            for (int i = 0; i < 31 - 3; i++)
+            {
+                for (int j = 1; j < 11; j++)
+                {
+                    var noviPresjek1 = Matrica[i, j];
+                    for (int k = i + 1; k < i + 4; k++)
+                    {
+                        for (int l = 1; l < 11; l++)
+                        {
+                            var noviPresjek = Matrica[k, l] + noviPresjek1;
+                            var odstupanje = (Math.Abs(noviPresjek - presjek) / presjek) * 100;
+
+                            if (odstupanje < maxOdstupanje)
+                            {
+                                result.Add(
+                                    new ResultItem
+                                    {
+                                        NoviPresjek = noviPresjek,
+                                        Odstupanje = odstupanje,
+                                        Punjenje = 100 * slojnost * brojZavoja * noviPresjek / povrsinaUtora,
+                                        Zica = j + " x " + Matrica[i, 0] + "      " + l + " x " + Matrica[k, 0]
+                                    });
+                            }
+                        }
+                    }
+                }
+            }
+
+            this.grid_Rezultat.ItemsSource = result;
+        }
+
+        static List<double> Zice = new List<double> 
+        { 
+            .14,    .16,    .18,    .2,     .224,   .25,    .28,    .3, 
+            .315,   .335,   .355,   .375,   .4,     .425,   .45,    .475, 
+            .5,     .56,    .6,     .63,    .65,    .71,    .75,    .8, 
+            .85,    .9,     .95,    1,      1.06,   1.12,   1.25 
+        };
+
+        double[,] Matrica = new double[31, 11];
+    }
+}
