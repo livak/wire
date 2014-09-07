@@ -77,20 +77,21 @@ namespace Wire
                 }
             }
 
-            var maxRazmak = sveKombinacije ? 3 : 1; 
-            for (int i = from; i <= to - maxRazmak; i++)
+            var maxRazmak = sveKombinacije ? 3 : 1;
+            for (int i = from; i <= to; i++)
             {
                 for (int j = 1; j < Matrica.GetLength(1); j++)
                 {
-                    for (int k = i + 1; k < i + maxRazmak + 1; k++)
+                    for (int k = i + 1; k <= i + maxRazmak; k++)
                     {
+                        if (k >= Matrica.GetLength(0)) continue;
                         for (int l = 1; l < Matrica.GetLength(1); l++)
                         {
                             if (j + l > maxBrojZica) continue;
 
                             var noviPresjek = Matrica[i, j] + Matrica[k, l];
                             var text = j + " x " + Matrica[i, 0] + "      " + l + " x " + Matrica[k, 0];
-                            AddResultItem(result, presjek, maxOdstupanje, slojnost, brojZavoja, povrsinaUtora, noviPresjek, text, k-i);
+                            AddResultItem(result, presjek, maxOdstupanje, slojnost, brojZavoja, povrsinaUtora, noviPresjek, text, k - i);
                         }
                     }
                 }
@@ -127,10 +128,10 @@ namespace Wire
 
         public static List<double> Zice = new List<double> 
         { 
-            .14,    .16,    .18,    .2,     .224,   .25,    .28,    .3, 
+            .2,     .224,   .25,    .28,    .3, 
             .315,   .335,   .355,   .375,   .4,     .425,   .45,    .475, 
-            .5,     .56,    .6,     .63,    .65,    .71,    .75,    .8, 
-            .85,    .9,     .95,    1,      1.06,   1.12,   1.25 
+            .5,     .56,    .6,     .63,    .65,    .67,    .71,    .75,    .8, 
+            .85,    .9,     .95,    1,      1.06,   1.1,    1.12,   1.25,   1.5,   1.6,   1.7
         };
     }
  
