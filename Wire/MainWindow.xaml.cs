@@ -23,10 +23,15 @@ namespace Wire
         public MainWindow()
         {
             InitializeComponent();
+            InitMatrica();
+        }
+
+        private void InitMatrica()
+        {
             for (int i = 0; i < Zice.Count; i++)
             {
                 Matrica[i, 0] = Zice[i];
-                for (int j = 1; j < 11; j++)
+                for (int j = 1; j < MaxBrojZicaUSnopu; j++)
                 {
                     Matrica[i, j] = Math.Pow(Zice[i] / 2, 2) * Math.PI * j;
                 }
@@ -56,7 +61,7 @@ namespace Wire
 
             for (int i = from; i <= to; i++)
             {
-                for (int j = 1; j < 11; j++)
+                for (int j = 1; j < MaxBrojZicaUSnopu; j++)
                 {
                     var noviPresjek = Matrica[i, j];
                     var odstupanje = (Math.Abs(noviPresjek - presjek) / presjek) * 100;
@@ -79,12 +84,12 @@ namespace Wire
             var maxRazmak = sveKombinacije ? 3 : 1; 
             for (int i = from; i <= to - maxRazmak; i++)
             {
-                for (int j = 1; j < 11; j++)
+                for (int j = 1; j < MaxBrojZicaUSnopu; j++)
                 {
                     var noviPresjek1 = Matrica[i, j];
                     for (int k = i + 1; k < i + maxRazmak + 1; k++)
                     {
-                        for (int l = 1; l < 11; l++)
+                        for (int l = 1; l < MaxBrojZicaUSnopu; l++)
                         {
                             var noviPresjek = Matrica[k, l] + noviPresjek1;
                             var odstupanje = (Math.Abs(noviPresjek - presjek) / presjek) * 100;
@@ -115,7 +120,7 @@ namespace Wire
             .5,     .56,    .6,     .63,    .65,    .71,    .75,    .8, 
             .85,    .9,     .95,    1,      1.06,   1.12,   1.25 
         };
-
-        double[,] Matrica = new double[31, 11];
+        const int MaxBrojZicaUSnopu = 11;
+        double[,] Matrica = new double[Zice.Count, MaxBrojZicaUSnopu];
     }
 }
