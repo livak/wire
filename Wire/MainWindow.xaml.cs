@@ -90,7 +90,7 @@ namespace Wire
                             if (j + l > maxBrojZica) continue;
 
                             var noviPresjek = Matrica[i, j] + Matrica[k, l];
-                            var text = j + " x " + Matrica[i, 0] + "      " + l + " x " + Matrica[k, 0];
+                            var text = string.Format("{0} x {1,-8:0.###}\t{2} x {3:0.###}", j, Matrica[i, 0], l, Matrica[k, 0]);
                             AddResultItem(result, presjek, maxOdstupanje, slojnost, brojZavoja, povrsinaUtora, noviPresjek, text, k - i);
                         }
                     }
