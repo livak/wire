@@ -24,27 +24,31 @@ namespace Wire
         public MainWindow()
         {
             InitializeComponent();
-            InitMatrica();
         }
 
-        private void InitMatrica()
+        private double[,] CreateMatrica(int maxBrojZica)
         {
+            double[,] matrica = new double[Zice.Count, maxBrojZica + 1];
             for (int i = 0; i < Zice.Count; i++)
             {
-                Matrica[i, 0] = Zice[i];
-                for (int j = 1; j < MaxBrojZicaUSnopu; j++)
+                matrica[i, 0] = Zice[i];
+                for (int j = 1; j < matrica.GetLength(1); j++)
                 {
-                    Matrica[i, j] = Math.Pow(Zice[i] / 2, 2) * Math.PI * j;
+                    matrica[i, j] = Math.Pow(Zice[i] / 2, 2) * Math.PI * j;
                 }
             }
+
+            return matrica;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             int brojZavoja;
             int maxOdstupanje;
+            int maxBrojZica;
             double povrsinaUtora;
             double presjek;
+
             int slojnost = radio_Slojnost1.IsChecked.Value ? 1 : 2;
 
             int from = drop_From.SelectedIndex;
@@ -55,14 +59,17 @@ namespace Wire
             var currentSeparator = System.Threading.Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator;
             int.TryParse(this.tbx_BrojZavoja.Text, out brojZavoja);
             int.TryParse(this.tbx_MaxOdstupanje.Text, out maxOdstupanje);
+            int.TryParse(this.tbx_MaxBrojZica.Text, out maxBrojZica);
             double.TryParse(this.tbx_PovrsinaUtora.Text.Replace(".", currentSeparator).Replace(",", currentSeparator), out povrsinaUtora);
             double.TryParse(this.tbx_Presjek.Text.Replace(".", currentSeparator).Replace(",", currentSeparator), out presjek);
+
+            double[,] Matrica = CreateMatrica(maxBrojZica);
 
             var result = new List<ResultItem>();
 
             for (int i = from; i <= to; i++)
             {
-                for (int j = 1; j < MaxBrojZicaUSnopu; j++)
+                for (int j = 1; j < Matrica.GetLength(1); j++)
                 {
                     var noviPresjek = Matrica[i, j];
                     string text = j + " x " + Matrica[i, 0];
@@ -73,12 +80,14 @@ namespace Wire
             var maxRazmak = sveKombinacije ? 3 : 1; 
             for (int i = from; i <= to - maxRazmak; i++)
             {
-                for (int j = 1; j < MaxBrojZicaUSnopu; j++)
+                for (int j = 1; j < Matrica.GetLength(1); j++)
                 {
                     for (int k = i + 1; k < i + maxRazmak + 1; k++)
                     {
-                        for (int l = 1; l < MaxBrojZicaUSnopu; l++)
+                        for (int l = 1; l < Matrica.GetLength(1); l++)
                         {
+                            if (j + l > maxBrojZica) continue;
+
                             var noviPresjek = Matrica[i, j] + Matrica[k, l];
                             var text = j + " x " + Matrica[i, 0] + "      " + l + " x " + Matrica[k, 0];
                             AddResultItem(result, presjek, maxOdstupanje, slojnost, brojZavoja, povrsinaUtora, noviPresjek, text, k-i);
@@ -90,7 +99,16 @@ namespace Wire
             this.grid_Rezultat.ItemsSource = result.OrderBy(x => x.Razmak).ThenBy(x => x.Odstupanje);
         }
 
-        private static void AddResultItem(List<ResultItem> collection, double presjek, int maxOdstupanje, int slojnost, int brojZavoja, double povrsinaUtora, double noviPresjek, string text, int razmak)
+        private static void AddResultItem(
+            List<ResultItem> collection, 
+            double presjek, 
+            int maxOdstupanje, 
+            int slojnost, 
+            int brojZavoja, 
+            double povrsinaUtora, 
+            double noviPresjek, 
+            string text, 
+            int razmak)
         {
             var odstupanje = (Math.Abs(noviPresjek - presjek) / presjek) * 100;
 
@@ -114,8 +132,6 @@ namespace Wire
             .5,     .56,    .6,     .63,    .65,    .71,    .75,    .8, 
             .85,    .9,     .95,    1,      1.06,   1.12,   1.25 
         };
-        const int MaxBrojZicaUSnopu = 11;
-        double[,] Matrica = new double[Zice.Count, MaxBrojZicaUSnopu];
     }
  
 }
