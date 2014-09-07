@@ -64,21 +64,11 @@ namespace Wire
                 for (int j = 1; j < MaxBrojZicaUSnopu; j++)
                 {
                     var noviPresjek = Matrica[i, j];
-                    var odstupanje = (Math.Abs(noviPresjek - presjek) / presjek) * 100;
-
-                    if (odstupanje < maxOdstupanje)
-                    {
-                        result.Add(
-                            new ResultItem
-                            {
-                                NoviPresjek = noviPresjek,
-                                Odstupanje = odstupanje,
-                                Punjenje = 100 * slojnost * brojZavoja * noviPresjek / povrsinaUtora,
-                                Zica = j + " x " + Matrica[i, 0]
-                            });
-                    }
+                    string text = j + " x " + Matrica[i, 0];
+                    AddResultItem(result, presjek, maxOdstupanje, slojnost, brojZavoja, povrsinaUtora, noviPresjek, text);
                 }
             }
+
             result.Add(new ResultItem());
 
             var maxRazmak = sveKombinacije ? 3 : 1; 
@@ -86,31 +76,35 @@ namespace Wire
             {
                 for (int j = 1; j < MaxBrojZicaUSnopu; j++)
                 {
-                    var noviPresjek1 = Matrica[i, j];
                     for (int k = i + 1; k < i + maxRazmak + 1; k++)
                     {
                         for (int l = 1; l < MaxBrojZicaUSnopu; l++)
                         {
-                            var noviPresjek = Matrica[k, l] + noviPresjek1;
-                            var odstupanje = (Math.Abs(noviPresjek - presjek) / presjek) * 100;
-
-                            if (odstupanje < maxOdstupanje)
-                            {
-                                result.Add(
-                                    new ResultItem
-                                    {
-                                        NoviPresjek = noviPresjek,
-                                        Odstupanje = odstupanje,
-                                        Punjenje = 100 * slojnost * brojZavoja * noviPresjek / povrsinaUtora,
-                                        Zica = j + " x " + Matrica[i, 0] + "      " + l + " x " + Matrica[k, 0]
-                                    });
-                            }
+                            var noviPresjek = Matrica[i, j] + Matrica[k, l];
+                            var text = j + " x " + Matrica[i, 0] + "      " + l + " x " + Matrica[k, 0];
+                            AddResultItem(result, presjek, maxOdstupanje, slojnost, brojZavoja, povrsinaUtora, noviPresjek, text);
                         }
                     }
                 }
             }
 
             this.grid_Rezultat.ItemsSource = result;
+        }
+
+        private static void AddResultItem(List<ResultItem> collection, double presjek, int maxOdstupanje, int slojnost, int brojZavoja, double povrsinaUtora, double noviPresjek, string text)
+        {
+            var odstupanje = (Math.Abs(noviPresjek - presjek) / presjek) * 100;
+
+            if (odstupanje < maxOdstupanje)
+            {
+                collection.Add(new ResultItem
+                   {
+                       NoviPresjek = noviPresjek,
+                       Odstupanje = odstupanje,
+                       Punjenje = 100 * slojnost * brojZavoja * noviPresjek / povrsinaUtora,
+                       Zica = text
+                   });
+            }
         }
 
         public static List<double> Zice = new List<double> 
