@@ -12,5 +12,6 @@ namespace Wire
         public double NoviPresjek { get; set; }
         public double Odstupanje { get; set; }
         public double Punjenje { get; set; }
+        public int Razmak { get; set; }
     }
 }

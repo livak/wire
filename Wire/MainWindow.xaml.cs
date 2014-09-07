@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -65,11 +66,9 @@ namespace Wire
                 {
                     var noviPresjek = Matrica[i, j];
                     string text = j + " x " + Matrica[i, 0];
-                    AddResultItem(result, presjek, maxOdstupanje, slojnost, brojZavoja, povrsinaUtora, noviPresjek, text);
+                    AddResultItem(result, presjek, maxOdstupanje, slojnost, brojZavoja, povrsinaUtora, noviPresjek, text, 0);
                 }
             }
-
-            result.Add(new ResultItem());
 
             var maxRazmak = sveKombinacije ? 3 : 1; 
             for (int i = from; i <= to - maxRazmak; i++)
@@ -82,16 +81,16 @@ namespace Wire
                         {
                             var noviPresjek = Matrica[i, j] + Matrica[k, l];
                             var text = j + " x " + Matrica[i, 0] + "      " + l + " x " + Matrica[k, 0];
-                            AddResultItem(result, presjek, maxOdstupanje, slojnost, brojZavoja, povrsinaUtora, noviPresjek, text);
+                            AddResultItem(result, presjek, maxOdstupanje, slojnost, brojZavoja, povrsinaUtora, noviPresjek, text, k-i);
                         }
                     }
                 }
             }
 
-            this.grid_Rezultat.ItemsSource = result;
+            this.grid_Rezultat.ItemsSource = result.OrderBy(x => x.Razmak).ThenBy(x => x.Odstupanje);
         }
 
-        private static void AddResultItem(List<ResultItem> collection, double presjek, int maxOdstupanje, int slojnost, int brojZavoja, double povrsinaUtora, double noviPresjek, string text)
+        private static void AddResultItem(List<ResultItem> collection, double presjek, int maxOdstupanje, int slojnost, int brojZavoja, double povrsinaUtora, double noviPresjek, string text, int razmak)
         {
             var odstupanje = (Math.Abs(noviPresjek - presjek) / presjek) * 100;
 
@@ -102,7 +101,8 @@ namespace Wire
                        NoviPresjek = noviPresjek,
                        Odstupanje = odstupanje,
                        Punjenje = 100 * slojnost * brojZavoja * noviPresjek / povrsinaUtora,
-                       Zica = text
+                       Zica = text,
+                       Razmak = razmak
                    });
             }
         }
@@ -117,4 +117,28 @@ namespace Wire
         const int MaxBrojZicaUSnopu = 11;
         double[,] Matrica = new double[Zice.Count, MaxBrojZicaUSnopu];
     }
+
+
+    public class ResultToBackgroundConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is int)
+            {
+                int quantity = (int)value;
+
+
+                    byte n = (byte)((255 / Math.Pow(quantity + 1,0.2)));
+
+                    return new SolidColorBrush(Color.FromRgb(n,n,n));
+            }
+
+            return Brushes.White;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }  
 }

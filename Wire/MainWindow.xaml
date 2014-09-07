@@ -3,6 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:Wire"
         Title="Žica" Height="350" Width="564">
+    <Window.Resources>
+        <local:ResultToBackgroundConverter x:Key="ResultToBackgroundConverter"></local:ResultToBackgroundConverter>
+    </Window.Resources>
     <Grid>
         <StackPanel>
             <StackPanel Orientation="Horizontal">
@@ -43,7 +46,14 @@
                 <DataGridTextColumn Binding="{Binding NoviPresjek, StringFormat={}{0:0.######}}" Header="Novi Presjek"/>
                 <DataGridTextColumn Binding="{Binding Odstupanje, StringFormat={}{0:0.##}}" Header="Odstupanje"/>
                 <DataGridTextColumn Binding="{Binding Punjenje, StringFormat={}{0:0.##}}" Header="Punjenje"/>
+                <DataGridTextColumn Binding="{Binding Razmak}" Header="Razmak"/>
             </DataGrid.Columns>
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource Self},
+                        Path=Item.Razmak, Converter={StaticResource ResultToBackgroundConverter}}"/>
+                </Style>
+            </DataGrid.RowStyle>
         </DataGrid>
 
     </Grid>
