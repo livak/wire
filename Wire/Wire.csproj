@@ -55,8 +55,10 @@
     </ApplicationDefinition>
     <Compile Include="Configuration.cs" />
     <Compile Include="EnumerableExtensions.cs" />
+    <Compile Include="InputParams.cs" />
     <Compile Include="ResultItem.cs" />
     <Compile Include="ResultToBackgroundConverter.cs" />
+    <Compile Include="WireCalculator.cs" />
     <Compile Include="Zica.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
