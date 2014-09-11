@@ -26,19 +26,15 @@ namespace Wire
             InitializeComponent();
         }
 
-        private double[,] CreateMatrica(int maxBrojZica)
+        private double UkupnaPovrsina(double promjer, double brojZica)
         {
-            double[,] matrica = new double[Zice.Count, maxBrojZica + 1];
-            for (int i = 0; i < Zice.Count; i++)
-            {
-                matrica[i, 0] = Zice[i];
-                for (int j = 1; j < matrica.GetLength(1); j++)
-                {
-                    matrica[i, j] = Math.Pow(Zice[i] / 2, 2) * Math.PI * j;
-                }
-            }
+            return Povrsina(promjer) * brojZica;
+        }
 
-            return matrica;
+        private double Povrsina(double promjer)
+        {
+            double radijus = promjer / 2;
+            return Math.Pow(radijus, 2) * Math.PI;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -63,35 +59,35 @@ namespace Wire
             double.TryParse(this.tbx_PovrsinaUtora.Text.Replace(".", currentSeparator).Replace(",", currentSeparator), out povrsinaUtora);
             double.TryParse(this.tbx_Presjek.Text.Replace(".", currentSeparator).Replace(",", currentSeparator), out presjek);
 
-            double[,] Matrica = CreateMatrica(maxBrojZica);
-
             var result = new List<ResultItem>();
 
-            for (int i = from; i <= to; i++)
+            for (int zica = from; zica <= to; zica++)
             {
-                for (int j = 1; j < Matrica.GetLength(1); j++)
+                for (int brojZica = 1; brojZica <= maxBrojZica; brojZica++)
                 {
-                    var noviPresjek = Matrica[i, j];
-                    string text = j + " x " + Matrica[i, 0];
+                    var noviPresjek = UkupnaPovrsina(Zice[zica], brojZica);
+                    string text = brojZica + " x " + Zice[zica];
                     AddResultItem(result, presjek, maxOdstupanje, slojnost, brojZavoja, povrsinaUtora, noviPresjek, text, 0);
                 }
             }
 
             var maxRazmak = sveKombinacije ? 3 : 1;
-            for (int i = from; i <= to; i++)
+            for (int zica = from; zica <= to; zica++)
             {
-                for (int j = 1; j < Matrica.GetLength(1); j++)
+                for (int brojZica = 1; brojZica <= maxBrojZica; brojZica++)
                 {
-                    for (int k = i + 1; k <= i + maxRazmak; k++)
+                    for (int susjednaZica = zica + 1; susjednaZica <= zica + maxRazmak; susjednaZica++)
                     {
-                        if (k >= Matrica.GetLength(0)) continue;
-                        for (int l = 1; l < Matrica.GetLength(1); l++)
+                        if (susjednaZica >= Zice.Count) continue;
+                        for (int brojSusjednihZica = 1; brojSusjednihZica <= maxBrojZica; brojSusjednihZica++)
                         {
-                            if (j + l > maxBrojZica) continue;
+                            if (brojZica + brojSusjednihZica > maxBrojZica) continue;
 
-                            var noviPresjek = Matrica[i, j] + Matrica[k, l];
-                            var text = string.Format("{0} x {1,-8:0.###}\t{2} x {3:0.###}", j, Matrica[i, 0], l, Matrica[k, 0]);
-                            AddResultItem(result, presjek, maxOdstupanje, slojnost, brojZavoja, povrsinaUtora, noviPresjek, text, k - i);
+                            var noviPresjek = UkupnaPovrsina(Zice[zica], brojZica) +
+                                              UkupnaPovrsina(Zice[susjednaZica], brojSusjednihZica);
+
+                            var text = string.Format("{0} x {1,-8:0.###}\t{2} x {3:0.###}", brojZica, Zice[zica], brojSusjednihZica, Zice[susjednaZica]);
+                            AddResultItem(result, presjek, maxOdstupanje, slojnost, brojZavoja, povrsinaUtora, noviPresjek, text, susjednaZica - zica);
                         }
                     }
                 }
