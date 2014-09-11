@@ -61,42 +61,48 @@ namespace Wire
 
             var result = new List<ResultItem>();
 
-            for (int zica = from; zica <= to; zica++)
+            var zice = CreateZice();
+            var brojeviZicaUSnopu = Enumerable.Range(1, maxBrojZica);
+
+            foreach (var zica in zice.Get(from, to))
             {
-                for (int brojZica = 1; brojZica <= maxBrojZica; brojZica++)
+                foreach (var brojZicaUSnopu in brojeviZicaUSnopu)
                 {
-                    var noviPresjek = UkupnaPovrsina(Zice[zica], brojZica);
-                    string text = brojZica + " x " + Zice[zica];
-                    AddResultItem(result, presjek, maxOdstupanje, slojnost, brojZavoja, povrsinaUtora, noviPresjek, text, 0);
+                    var noviPresjek = zica.PresjekSnopa(brojZicaUSnopu);
+                    string text = zica.ToString(brojZicaUSnopu);
+
+                    TryAddResultItem(result, presjek, maxOdstupanje, slojnost, brojZavoja, povrsinaUtora, noviPresjek, text, 0);
                 }
             }
 
             var maxRazmak = sveKombinacije ? 3 : 1;
-            for (int zica = from; zica <= to; zica++)
+
+            foreach (var zica1 in zice.Get(from, to))
             {
-                for (int brojZica = 1; brojZica <= maxBrojZica; brojZica++)
+                foreach (var brojZica1USnopu in brojeviZicaUSnopu)
                 {
-                    for (int susjednaZica = zica + 1; susjednaZica <= zica + maxRazmak; susjednaZica++)
+                    var fromIducaZica = zica1.Order + 1;
+                    var toMaximalniRazmak = zica1.Order + maxRazmak;
+                    foreach (var zica2 in zice.Get(fromIducaZica, toMaximalniRazmak))
                     {
-                        if (susjednaZica >= Zice.Count) continue;
-                        for (int brojSusjednihZica = 1; brojSusjednihZica <= maxBrojZica; brojSusjednihZica++)
+                        foreach (var brojZica2USnopu in brojeviZicaUSnopu)
                         {
-                            if (brojZica + brojSusjednihZica > maxBrojZica) continue;
+                            if (brojZica1USnopu + brojZica2USnopu > maxBrojZica) continue;
+                            var noviPresjek = zica1.PresjekSnopa(brojZica1USnopu) + zica2.PresjekSnopa(brojZica2USnopu);
+                            var text = Zica.ToString(zica1, brojZica1USnopu, zica2, brojZica2USnopu);
+                            var razmak = zica2.Order - zica1.Order;
 
-                            var noviPresjek = UkupnaPovrsina(Zice[zica], brojZica) +
-                                              UkupnaPovrsina(Zice[susjednaZica], brojSusjednihZica);
-
-                            var text = string.Format("{0} x {1,-8:0.###}\t{2} x {3:0.###}", brojZica, Zice[zica], brojSusjednihZica, Zice[susjednaZica]);
-                            AddResultItem(result, presjek, maxOdstupanje, slojnost, brojZavoja, povrsinaUtora, noviPresjek, text, susjednaZica - zica);
+                            TryAddResultItem(result, presjek, maxOdstupanje, slojnost, brojZavoja, povrsinaUtora, noviPresjek, text, razmak);
                         }
                     }
                 }
             }
 
+
             this.grid_Rezultat.ItemsSource = result.OrderBy(x => x.Razmak).ThenBy(x => x.Odstupanje);
         }
 
-        private static void AddResultItem(
+        private static void TryAddResultItem(
             List<ResultItem> collection, 
             double presjek, 
             int maxOdstupanje, 
@@ -122,13 +128,10 @@ namespace Wire
             }
         }
 
-        public static List<double> Zice = new List<double> 
-        { 
-            .2,     .224,   .25,    .28,    .3, 
-            .315,   .335,   .355,   .375,   .4,     .425,   .45,    .475, 
-            .5,     .56,    .6,     .63,    .65,    .67,    .71,    .75,    .8, 
-            .85,    .9,     .95,    1,      1.06,   1.1,    1.12,   1.25,   1.5,   1.6,   1.7
-        };
+        private List<Zica> CreateZice()
+        {
+            int i = 0;
+            return Configuration.Zice.OrderBy(x => x).Select(x => new Zica(x, i++)).ToList();
+        }
     }
- 
 }

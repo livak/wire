@@ -24,9 +24,9 @@
                 <TextBox Name="tbx_BrojZavoja" Text="45" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="120" />
                 <StackPanel Orientation="Horizontal">
                     <Label>Odaberi raspon promjera žica od:</Label>
-                    <ComboBox Name="drop_From" SelectedIndex="4" ItemsSource="{Binding Source={x:Static local:MainWindow.Zice}}"></ComboBox>
+                    <ComboBox Name="drop_From" SelectedIndex="4" ItemsSource="{Binding Source={x:Static local:Configuration.Zice}}"></ComboBox>
                     <Label>do:</Label>
-                    <ComboBox Name="drop_To" SelectedIndex="29" ItemsSource="{Binding Source={x:Static local:MainWindow.Zice}}"></ComboBox>
+                    <ComboBox Name="drop_To" SelectedIndex="29" ItemsSource="{Binding Source={x:Static local:Configuration.Zice}}"></ComboBox>
                 </StackPanel>
             </StackPanel>
             <StackPanel Orientation="Horizontal">

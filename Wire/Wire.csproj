@@ -53,8 +53,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Configuration.cs" />
+    <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="ResultItem.cs" />
     <Compile Include="ResultToBackgroundConverter.cs" />
+    <Compile Include="Zica.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
