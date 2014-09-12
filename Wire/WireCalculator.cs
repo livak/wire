@@ -16,8 +16,8 @@ namespace Wire
         {
             var brojeviZicaUSnopu = Enumerable.Range(1, @params.MaxBrojZica);
 
-            var resultJednaVrstaZice = JednaVrstaZica(@params,brojeviZicaUSnopu);
-            var rasultKonbinacijaDvijeVrsteZice = KonbinacijaDvijeVrsteZice(@params,brojeviZicaUSnopu);
+            var resultJednaVrstaZice = JednaVrstaZica(@params, brojeviZicaUSnopu);
+            var rasultKonbinacijaDvijeVrsteZice = KonbinacijaDvijeVrsteZice(@params, brojeviZicaUSnopu);
 
             var result = new List<ResultItem>();
             result.AddRange(resultJednaVrstaZice);
