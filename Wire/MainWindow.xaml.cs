@@ -30,11 +30,11 @@ namespace Wire
             var maxRazmak = sveKombinacije ? 3 : 1;
 
             var currentSeparator = System.Threading.Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator;
-            int.TryParse(this.tbx_BrojZavoja.Text, out brojZavoja);
-            int.TryParse(this.tbx_MaxOdstupanje.Text, out maxOdstupanje);
-            int.TryParse(this.tbx_MaxBrojZica.Text, out maxBrojZica);
-            double.TryParse(this.tbx_PovrsinaUtora.Text.Replace(".", currentSeparator).Replace(",", currentSeparator), out povrsinaUtora);
-            double.TryParse(this.tbx_Presjek.Text.Replace(".", currentSeparator).Replace(",", currentSeparator), out presjek);
+            int.TryParse(tbx_BrojZavoja.Text, out brojZavoja);
+            int.TryParse(tbx_MaxOdstupanje.Text, out maxOdstupanje);
+            int.TryParse(tbx_MaxBrojZica.Text, out maxBrojZica);
+            double.TryParse(tbx_PovrsinaUtora.Text.Replace(".", currentSeparator).Replace(",", currentSeparator), out povrsinaUtora);
+            double.TryParse(tbx_Presjek.Text.Replace(".", currentSeparator).Replace(",", currentSeparator), out presjek);
 
             var inputParams = new InputParams
             {
@@ -49,7 +49,7 @@ namespace Wire
 
             var calculator = new WireCalculator(promjeriZica: Configuration.Zice.Get(from, to));
 
-            this.grid_Rezultat.ItemsSource = calculator
+            grid_Rezultat.ItemsSource = calculator
                 .GetResults(inputParams)
                 .OrderBy(x => x.Razmak)
                 .ThenBy(x => x.Odstupanje);
