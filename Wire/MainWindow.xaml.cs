@@ -15,11 +15,11 @@ namespace Wire
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            int brojZavoja;
-            int maxOdstupanje;
-            int maxBrojZica;
-            double povrsinaUtora;
-            double presjek;
+            int brojZavoja       = ParseInt(tbx_BrojZavoja.Text);
+            int maxOdstupanje    = ParseInt(tbx_MaxOdstupanje.Text);
+            int maxBrojZica      = ParseInt(tbx_MaxBrojZica.Text);
+            double povrsinaUtora = ParseDouble(tbx_PovrsinaUtora.Text);
+            double presjek       = ParseDouble(tbx_Presjek.Text);
 
             int slojnost = radio_Slojnost1.IsChecked.Value ? 1 : 2;
 
@@ -28,13 +28,8 @@ namespace Wire
 
             bool sveKombinacije = cbx_PrikaziSve.IsChecked ?? false;
             var maxRazmak = sveKombinacije ? 3 : 1;
-
-            var currentSeparator = System.Threading.Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator;
-            int.TryParse(tbx_BrojZavoja.Text, out brojZavoja);
-            int.TryParse(tbx_MaxOdstupanje.Text, out maxOdstupanje);
-            int.TryParse(tbx_MaxBrojZica.Text, out maxBrojZica);
-            double.TryParse(tbx_PovrsinaUtora.Text.Replace(".", currentSeparator).Replace(",", currentSeparator), out povrsinaUtora);
-            double.TryParse(tbx_Presjek.Text.Replace(".", currentSeparator).Replace(",", currentSeparator), out presjek);
+            
+            var nemaZica = tbx_NemaZice.Text.Split(';',' ').Select(ParseDouble).Where(f => f != default(double));
 
             var inputParams = new InputParams
             {
@@ -47,12 +42,32 @@ namespace Wire
                 Slojnost = slojnost
             };
 
-            var calculator = new WireCalculator(promjeriZica: Configuration.Zice.Get(from, to));
+            var calculator = new WireCalculator(promjeriZica: Configuration.Zice.Get(from, to).Except(nemaZica));
 
             grid_Rezultat.ItemsSource = calculator
                 .GetResults(inputParams)
                 .OrderBy(x => x.Razmak)
                 .ThenBy(x => x.Odstupanje);
+        }
+
+        private double ParseDouble(string s)
+        {
+            double r;
+            double.TryParse(ToCurrentCultureSeparator(s), out r);
+            return r;
+        }
+
+        private int ParseInt(string s)
+        {
+            int r;
+            int.TryParse(s, out r);
+            return r;
+        }
+
+        private static string ToCurrentCultureSeparator(string s)
+        {
+            var currentSeparator = System.Threading.Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator;
+            return s.Replace(".", currentSeparator).Replace(",", currentSeparator);
         }
     }
 }
