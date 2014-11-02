@@ -55,7 +55,9 @@
     </ApplicationDefinition>
     <Compile Include="Configuration.cs" />
     <Compile Include="EnumerableExtensions.cs" />
+    <Compile Include="Infrastructure\ViewModeBase.cs" />
     <Compile Include="InputParams.cs" />
+    <Compile Include="MainWindowViewModel.cs" />
     <Compile Include="ResultItem.cs" />
     <Compile Include="ResultToBackgroundConverter.cs" />
     <Compile Include="WireCalculator.cs" />
