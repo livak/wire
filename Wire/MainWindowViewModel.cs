@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using Wire.Infrastructure;
@@ -20,8 +21,12 @@ namespace Wire
 
         public string NemaZice { get; set; }
 
-        public List<double> Zice { get; set; }
-
+        public ObservableCollection<double> _zice;
+        public ObservableCollection<double> Zice
+        {
+            get { return _zice; }
+            set { _zice = value; OnPropertyChanged(); }
+        }
         public IEnumerable<ResultItem> _result;
         public IEnumerable<ResultItem> Result
         {
@@ -39,7 +44,7 @@ namespace Wire
             Slojnost = true;
             From = 4;
             To = 29;
-            Zice = Configuration.Zice();
+            Zice = new ObservableCollection<double>(Configuration.Zice());
             NemaZice = string.Empty;
         }
 
@@ -65,7 +70,7 @@ namespace Wire
                 .ThenBy(x => x.Odstupanje);
         }
 
-        private double ParseDouble(string s)
+        public static double ParseDouble(string s)
         {
             double r;
             double.TryParse(ToCurrentCultureSeparator(s).Trim(), out r);

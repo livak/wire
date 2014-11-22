@@ -8,62 +8,84 @@
         <local:MainWindowViewModel x:Key="ViewModel"></local:MainWindowViewModel>
     </Window.Resources>
     <Grid Name="main" DataContext="{StaticResource ViewModel}">
-        <StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Label Content="Traženi presjek:" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="100"/>
-                <TextBox Text="{Binding Path=Presjek, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="120" />
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="Odaberi slojnost:"></Label>
-                    <StackPanel Orientation="Horizontal">
-                        <RadioButton Content="1" IsChecked="{Binding Path=Slojnost}" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                        <RadioButton Content="2" VerticalAlignment="Center"/>
+        <TabControl x:Name="tabControl">
+            <TabItem Header="Izračun">
+                <Grid>
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Traženi presjek:" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="100"/>
+                            <TextBox Text="{Binding Path=Presjek, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="120" />
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Odaberi slojnost:"></Label>
+                                <StackPanel Orientation="Horizontal">
+                                    <RadioButton Content="1" IsChecked="{Binding Path=Slojnost}" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                    <RadioButton Content="2" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Broj zavoja:" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="100"/>
+                            <TextBox Text="{Binding Path=BrojZavoja, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="120" />
+                            <StackPanel Orientation="Horizontal">
+                                <Label>Odaberi raspon promjera žica od:</Label>
+                                <ComboBox SelectedIndex="{Binding Path=From}" ItemsSource="{Binding Path=Zice, UpdateSourceTrigger=PropertyChanged}"></ComboBox>
+                                <Label>do:</Label>
+                                <ComboBox SelectedIndex="{Binding Path=To}" ItemsSource="{Binding Path=Zice, UpdateSourceTrigger=PropertyChanged}"></ComboBox>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Površina utora:" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="100"/>
+                            <TextBox Text="{Binding Path=PovrsinaUtora, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="120" />
+                            <CheckBox IsChecked="{Binding Path=SveKombinacije}" Content="Prikaži sve kombinacije" VerticalAlignment="Center" Margin="5,0,0,0"></CheckBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Max odstupanje:" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="100"/>
+                            <TextBox Text="{Binding Path=MaxOdstupanje, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="120" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Max broj žica:" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="100"/>
+                            <TextBox Text="{Binding Path=MaxBrojZica, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="120" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Nema žice:" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="100"/>
+                            <TextBox Text="{Binding Path=NemaZice, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="120" />
+                        </StackPanel>
                     </StackPanel>
-                </StackPanel>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Label Content="Broj zavoja:" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="100"/>
-                <TextBox Text="{Binding Path=BrojZavoja, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="120" />
-                <StackPanel Orientation="Horizontal">
-                    <Label>Odaberi raspon promjera žica od:</Label>
-                    <ComboBox SelectedIndex="{Binding Path=From}" ItemsSource="{Binding Path=Zice}"></ComboBox>
-                    <Label>do:</Label>
-                    <ComboBox SelectedIndex="{Binding Path=To}" ItemsSource="{Binding Path=Zice}"></ComboBox>
-                </StackPanel>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Label Content="Površina utora:" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="100"/>
-                <TextBox Text="{Binding Path=PovrsinaUtora, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="120" />
-                <CheckBox IsChecked="{Binding Path=SveKombinacije}" Content="Prikaži sve kombinacije" VerticalAlignment="Center" Margin="5,0,0,0"></CheckBox>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Label Content="Max odstupanje:" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="100"/>
-                <TextBox Text="{Binding Path=MaxOdstupanje, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="120" />
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Label Content="Max broj žica:" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="100"/>
-                <TextBox Text="{Binding Path=MaxBrojZica, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="120" />
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Label Content="Nema žice:" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="100"/>
-                <TextBox Text="{Binding Path=NemaZice, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="120" />
-            </StackPanel>
-        </StackPanel>
-        <Button Content="Nađi žicu" HorizontalAlignment="Left" Margin="267,80,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
-        <DataGrid ItemsSource="{Binding Path=Result}" Margin="0,159,0,0" AutoGenerateColumns="False">
-            <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Zica}" Header="Žica"/>
-                <DataGridTextColumn Binding="{Binding NoviPresjek, StringFormat={}{0:0.######}}" Header="Novi Presjek"/>
-                <DataGridTextColumn Binding="{Binding Odstupanje, StringFormat={}{0:0.##}}" Header="Odstupanje"/>
-                <DataGridTextColumn Binding="{Binding Punjenje, StringFormat={}{0:0.##}}" Header="Punjenje"/>
-                <DataGridTextColumn Binding="{Binding Razmak}" Header="Razmak"/>
-            </DataGrid.Columns>
-            <DataGrid.RowStyle>
-                <Style TargetType="DataGridRow">
-                    <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource Self},
-                        Path=Item.Razmak, Converter={StaticResource ResultToBackgroundConverter}}"/>
-                </Style>
-            </DataGrid.RowStyle>
-        </DataGrid>
-
+                    <Button Content="Nađi žicu" HorizontalAlignment="Left" Margin="267,80,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+                    <DataGrid ItemsSource="{Binding Path=Result}" Margin="0,159,0,0" AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Zica}" Header="Žica"/>
+                            <DataGridTextColumn Binding="{Binding NoviPresjek, StringFormat={}{0:0.######}}" Header="Novi Presjek"/>
+                            <DataGridTextColumn Binding="{Binding Odstupanje, StringFormat={}{0:0.##}}" Header="Odstupanje"/>
+                            <DataGridTextColumn Binding="{Binding Punjenje, StringFormat={}{0:0.##}}" Header="Punjenje"/>
+                            <DataGridTextColumn Binding="{Binding Razmak}" Header="Razmak"/>
+                        </DataGrid.Columns>
+                        <DataGrid.RowStyle>
+                            <Style TargetType="DataGridRow">
+                                <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource Self},
+                                        Path=Item.Razmak, Converter={StaticResource ResultToBackgroundConverter}}"/>
+                            </Style>
+                        </DataGrid.RowStyle>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Postavke">
+                <Grid Background="#FFE5E5E5">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Unesi promjer žice:" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="130"/>
+                            <TextBox Name="changeZica" Width="100"></TextBox>
+                            <Button Name="addZica" CommandParameter="{Binding ElementName=changeZica, Path=Text}" Width="40" Margin="10,0,0,0" Click="addZica_Click">dodaj</Button>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Odaberi žicu:" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="130"/>
+                            <ComboBox Name="zicaToRemove"   Width="100" ItemsSource="{Binding Path=Zice, UpdateSourceTrigger=PropertyChanged}"></ComboBox>
+                            <Button Name="removeZica" CommandParameter="{Binding ElementName=zicaToRemove, Path=SelectedItem}" Width="40" Margin="10,0,0,0" Click="removeZica_Click">ukloni</Button>
+                            <Button Name="resetAll"  Margin="50,0,0,0" Click="resetAll_Click">reset svih postavki</Button>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>

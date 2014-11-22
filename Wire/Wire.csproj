@@ -58,6 +58,7 @@
     <Compile Include="Infrastructure\ViewModeBase.cs" />
     <Compile Include="InputParams.cs" />
     <Compile Include="MainWindowViewModel.cs" />
+    <Compile Include="ObservableCollectionExtensions.cs" />
     <Compile Include="ResultItem.cs" />
     <Compile Include="ResultToBackgroundConverter.cs" />
     <Compile Include="WireCalculator.cs" />
