@@ -12,7 +12,13 @@ namespace Wire
         public string MaxOdstupanje { get; set; }
         public string MaxBrojZica { get; set; }
         public string PovrsinaUtora { get; set; }
-        public string Presjek { get; set; }
+
+        string _presjek;
+        public string Presjek
+        {
+            get { return _presjek; }
+            set { _presjek = value; OnPropertyChanged(); }
+        }
         public bool Slojnost { get; set; }
 
         public int From { get; set; }
@@ -20,6 +26,11 @@ namespace Wire
         public bool SveKombinacije { get; set; }
 
         public string NemaZice { get; set; }
+
+        public string BrojZica1 { get; set; }
+        public string PromjerZice1 { get; set; }
+        public string BrojZica2 { get; set; }
+        public string PromjerZice2 { get; set; }
 
         public ObservableCollection<double> _zice;
         public ObservableCollection<double> Zice
@@ -70,10 +81,17 @@ namespace Wire
                 .ThenBy(x => x.Odstupanje);
         }
 
+        public void SetPresjekFromExistingWires()
+        {
+            Presjek = (new Zica(ParseDouble(PromjerZice1)).PresjekSnopa(ParseInt(BrojZica1)) +
+                       new Zica(ParseDouble(PromjerZice2)).PresjekSnopa(ParseInt(BrojZica2)))
+                      .ToString("0.####");
+        }
+
         public static double ParseDouble(string s)
         {
             double r;
-            double.TryParse(ToCurrentCultureSeparator(s).Trim(), out r);
+            double.TryParse(ToCurrentCultureSeparator(s ?? string.Empty).Trim(), out r);
             return r;
         }
 

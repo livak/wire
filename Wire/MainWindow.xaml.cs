@@ -58,5 +58,10 @@ namespace Wire
             viewModel.Zice = new ObservableCollection<double>(Configuration.GetDefaults());
             Configuration.SaveZice(viewModel.Zice);
         }
+
+        private void Button_SetPresjek(object sender, RoutedEventArgs e)
+        {
+            viewModel.SetPresjekFromExistingWires();
+        }
     }
 }

@@ -8,16 +8,20 @@ namespace Wire
         public double Promjer { get; private set; }
         public int Order { get; private set; }
 
-        public Zica(double promjer, int order)
+        public Zica(double promjer, int order) : this(promjer)
+        {
+            Order = order;
+        }
+
+        public Zica(double promjer)
         {
             Promjer = promjer;
             Presjek = PovrsinaKruga(promjer);
-            Order = order;
         }
 
         public double PresjekSnopa(int brojZica)
         {
-            return brojZica * Presjek;
+            return brojZica * PovrsinaKruga(Presjek);
         }
 
         private double PovrsinaKruga(double promjer)
