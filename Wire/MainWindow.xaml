@@ -55,7 +55,7 @@
                                             <TextBox Text="{Binding Path=BrojZica2}" Width="25" Height="23"></TextBox>
                                             <Label>Žica:</Label>
                                             <TextBox Text="{Binding Path=PromjerZice2}" Width="40" Height="23"></TextBox>
-                                            <Button Height="23" Margin="5,0,0,0" Click="Button_SetPresjek">Spremi u traženi presjek</Button>
+                                            <Button Height="23" Margin="5,0,0,0" Command="{Binding SetPresjekCommand}">Spremi u traženi presjek</Button>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal"></StackPanel>
                                     </StackPanel>
@@ -76,7 +76,7 @@
                                 <StackPanel Orientation="Horizontal" Height="25">
                                     <CheckBox IsChecked="{Binding Path=SveKombinacije}" Content="Prikaži sve kombinacije" Margin="5,0,0,0" VerticalAlignment="Center"></CheckBox>
                                 </StackPanel>
-                                <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,8" Content="Nađi žicu"  Width="76" Click="Button_Click"/>
+                                <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,8" Content="Nađi žicu"  Width="76" Command="{Binding DoCalculationCommand}"/>
                             </StackPanel>
                         </StackPanel>
                         <DataGrid IsReadOnly="True" DockPanel.Dock="Bottom" ItemsSource="{Binding Path=Result}" AutoGenerateColumns="False">
@@ -103,13 +103,13 @@
                         <StackPanel Orientation="Horizontal">
                             <Label Content="Unesi promjer žice:" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="130"/>
                             <TextBox Name="changeZica" Width="100"></TextBox>
-                            <Button Name="addZica" CommandParameter="{Binding ElementName=changeZica, Path=Text}" Width="40" Margin="10,0,0,0" Click="addZica_Click">dodaj</Button>
+                            <Button Name="addZica" Width="40" Margin="10,0,0,0" Command="{Binding AddZicaCommand}" CommandParameter="{Binding ElementName=changeZica, Path=Text}">dodaj</Button>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <Label Content="Odaberi žicu:" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="130"/>
                             <ComboBox Name="zicaToRemove"   Width="100" ItemsSource="{Binding Path=Zice, UpdateSourceTrigger=PropertyChanged}"></ComboBox>
-                            <Button Name="removeZica" CommandParameter="{Binding ElementName=zicaToRemove, Path=SelectedItem}" Width="40" Margin="10,0,0,0" Click="removeZica_Click">ukloni</Button>
-                            <Button Name="resetAll"  Margin="50,0,0,0" Click="resetAll_Click">reset svih postavki</Button>
+                            <Button Name="removeZica"  Width="40" Margin="10,0,0,0" Command="{Binding RemoveZicaCommand}" CommandParameter="{Binding ElementName=zicaToRemove, Path=SelectedItem}">ukloni</Button>
+                            <Button Name="resetAll"  Margin="50,0,0,0" Command="{Binding ResetAllCommand}">reset svih postavki</Button>
                         </StackPanel>
                     </StackPanel>
                 </Grid>

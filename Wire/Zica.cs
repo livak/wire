@@ -21,7 +21,7 @@ namespace Wire
 
         public double PresjekSnopa(int brojZica)
         {
-            return brojZica * PovrsinaKruga(Presjek);
+            return brojZica * Presjek;
         }
 
         private double PovrsinaKruga(double promjer)

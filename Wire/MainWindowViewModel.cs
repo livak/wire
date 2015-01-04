@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
@@ -45,6 +46,77 @@ namespace Wire
             set { _result = value; OnPropertyChanged(); }
         }
 
+        private RelayCommand doCalculationCommand;
+
+        public RelayCommand DoCalculationCommand
+        {
+            get
+            {   
+                if (doCalculationCommand == null)
+                {
+                    doCalculationCommand = new RelayCommand(DoCalculation);
+                }
+                return doCalculationCommand;
+            }
+        }
+
+        private RelayCommand<double?> removeZicaCommand;
+
+        public RelayCommand<double?> RemoveZicaCommand
+        {
+            get
+            {
+                if (removeZicaCommand == null)
+                {
+                    removeZicaCommand = new RelayCommand<double?>(zica => { DoRemoveZica(zica); });
+                }
+                return removeZicaCommand;
+            }
+        }
+
+        private RelayCommand<string> addZicaCommand;
+
+        public RelayCommand<string> AddZicaCommand
+        {
+            get
+            {
+                if (addZicaCommand == null)
+                {
+                    addZicaCommand = new RelayCommand<string>(zica => { DoAddZica(zica); });
+                }
+                return addZicaCommand;
+            }
+        }
+
+        private RelayCommand resetAllCommand;
+
+        public RelayCommand ResetAllCommand
+        {
+            get
+            {
+                if (resetAllCommand == null)
+                {
+                    resetAllCommand = new RelayCommand(DoResetAll);
+                }
+                return resetAllCommand;
+            }
+        }
+
+        private RelayCommand setPresjekCommand;
+
+        public RelayCommand SetPresjekCommand
+        {
+            get
+            {
+                if (setPresjekCommand == null)
+                {
+                    setPresjekCommand = new RelayCommand(SetPresjekFromExistingWires);
+                }
+                return setPresjekCommand;
+            }
+        }
+
+
         public MainWindowViewModel()
         {
             Presjek = 0.7209.ToString();
@@ -79,6 +151,31 @@ namespace Wire
                 .GetResults(inputParams)
                 .OrderBy(x => x.Razmak)
                 .ThenBy(x => x.Odstupanje);
+        }
+
+        public void DoRemoveZica(double? zica)
+        {
+            if (!zica.HasValue) return;
+            Zice.Remove(zica.Value);
+            SaveZice();
+        }
+
+        private void DoAddZica(string zica)
+        {
+            double zicaAsDouble = ParseDouble(zica);
+            if (Zice.Contains(zicaAsDouble)) return;
+            Zice.AddInOrder(zicaAsDouble);
+            SaveZice();
+        }
+
+        private void DoResetAll()
+        {
+            Zice = new ObservableCollection<double>(Configuration.GetDefaults());
+            SaveZice();
+        }
+        private void SaveZice()
+        {
+            Configuration.SaveZice(Zice);
         }
 
         public void SetPresjekFromExistingWires()
