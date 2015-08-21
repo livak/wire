@@ -145,7 +145,7 @@ namespace Wire
             };
 
             var nemaZica = NemaZice.Split(';', ' ').Select(ParseDouble).Where(f => f != default(double));
-            var calculator = new WireCalculator(promjeriZica: Zice.Get(From, To).Except(nemaZica));
+            var calculator = new WireCalculator(promjeriZica: Zice.Get(From, To), nemaZicaPromjeri: nemaZica);
 
             Result = calculator
                 .GetResults(inputParams)

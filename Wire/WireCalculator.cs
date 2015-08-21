@@ -7,9 +7,12 @@ namespace Wire
     class WireCalculator
     {
         private List<Zica> zice;
-        public WireCalculator(IEnumerable<double> promjeriZica)
+        private List<Zica> nemaZica;
+
+        public WireCalculator(IEnumerable<double> promjeriZica, IEnumerable<double> nemaZicaPromjeri)
         {
             zice = CreateZice(promjeriZica);
+            this.nemaZica = CreateZice(nemaZicaPromjeri);
         }
 
         public List<ResultItem> GetResults(InputParams @params)
@@ -32,6 +35,7 @@ namespace Wire
             {
                 foreach (var brojZicaUSnopu in brojeviZicaUSnopu)
                 {
+                    if (nemaZica.Any(x => x.Promjer == zica.Promjer)) continue;
                     ResultItem resultItem;
                     bool success = TryCreateResultItem(
                         resultItem: out resultItem,
@@ -57,6 +61,7 @@ namespace Wire
                     {
                         foreach (var brojZica2USnopu in brojeviZicaUSnopu)
                         {
+                            if (nemaZica.Any(x => x.Promjer == zica1.Promjer || x.Promjer == zica2.Promjer)) continue;
                             if (brojZica1USnopu + brojZica2USnopu > @params.MaxBrojZica) continue;
 
                             ResultItem resultItem;
