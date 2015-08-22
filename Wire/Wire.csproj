@@ -62,6 +62,7 @@
     <Compile Include="ObservableCollectionExtensions.cs" />
     <Compile Include="ResultItem.cs" />
     <Compile Include="ResultToBackgroundConverter.cs" />
+    <Compile Include="SettingBindingExtension.cs" />
     <Compile Include="WireCalculator.cs" />
     <Compile Include="Zica.cs" />
     <Page Include="MainWindow.xaml">

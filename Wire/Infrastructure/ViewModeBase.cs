@@ -15,5 +15,10 @@ namespace Wire.Infrastructure
                 handler(this, new PropertyChangedEventArgs(caller));
             }
         }
+
+        public void NotifyAllPropertiesChanged()
+        {
+            OnPropertyChanged(string.Empty);
+        }
     }
 }

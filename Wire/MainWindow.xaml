@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:Wire"
-        Title="Žica" Height="398" Width="564">
+        Title="Žica" Height="{local:SettingBinding Height}" Width="{local:SettingBinding Width}" Closed="window_Closed">
     <Window.Resources>
         <local:ResultToBackgroundConverter x:Key="ResultToBackgroundConverter"></local:ResultToBackgroundConverter>
         <local:MainWindowViewModel x:Key="ViewModel"></local:MainWindowViewModel>
@@ -19,27 +19,27 @@
                             <StackPanel Orientation="Vertical">
                                 <StackPanel Orientation="Horizontal">
                                     <Label Content="Traženi presjek:"  Width="100"/>
-                                    <TextBox Text="{Binding Path=Presjek, UpdateSourceTrigger=PropertyChanged}"  Height="23" Width="120" />
+                                    <TextBox Text="{Binding Path=Presjek}"  Height="23" Width="120" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
                                     <Label Content="Broj zavoja:"  Width="100"/>
-                                    <TextBox Text="{Binding Path=BrojZavoja, UpdateSourceTrigger=PropertyChanged}" Height="23" Width="120" />
+                                    <TextBox Text="{Binding Path=BrojZavoja}" Height="23" Width="120" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
                                     <Label Content="Površina utora:" Width="100"/>
-                                    <TextBox Text="{Binding Path=PovrsinaUtora, UpdateSourceTrigger=PropertyChanged}" Height="23" Width="120" />
+                                    <TextBox Text="{Binding Path=PovrsinaUtora}" Height="23" Width="120" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
                                     <Label Content="Max odstupanje:" Width="100"/>
-                                    <TextBox Text="{Binding Path=MaxOdstupanje, UpdateSourceTrigger=PropertyChanged}" Height="23" Width="120" />
+                                    <TextBox Text="{Binding Path=MaxOdstupanje}" Height="23" Width="120" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
                                     <Label Content="Max broj žica:" HorizontalAlignment="Left" Width="100"/>
-                                    <TextBox Text="{Binding Path=MaxBrojZica, UpdateSourceTrigger=PropertyChanged}" Height="23" Width="120" />
+                                    <TextBox Text="{Binding Path=MaxBrojZica}" Height="23" Width="120" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
                                     <Label Content="Nema žice:" Width="100"/>
-                                    <TextBox Text="{Binding Path=NemaZice, UpdateSourceTrigger=PropertyChanged}" Height="23"  Width="120" />
+                                    <TextBox Text="{Binding Path=NemaZice}" Height="23"  Width="120" />
                                 </StackPanel>
                             </StackPanel>
                             <StackPanel Orientation="Vertical">
@@ -72,9 +72,9 @@
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
                                     <Label>Odaberi raspon promjera žica od:</Label>
-                                    <ComboBox SelectedIndex="{Binding Path=From}" ItemsSource="{Binding Path=Zice, UpdateSourceTrigger=PropertyChanged}"></ComboBox>
+                                    <ComboBox SelectedIndex="{Binding Path=From}" ItemsSource="{Binding Path=Zice}"></ComboBox>
                                     <Label>do:</Label>
-                                    <ComboBox SelectedIndex="{Binding Path=To}" ItemsSource="{Binding Path=Zice, UpdateSourceTrigger=PropertyChanged}"></ComboBox>
+                                    <ComboBox SelectedIndex="{Binding Path=To}" ItemsSource="{Binding Path=Zice}"></ComboBox>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Height="25">
                                     <CheckBox IsChecked="{Binding Path=SveKombinacije}" Content="Prikaži sve kombinacije" Margin="5,0,0,0" VerticalAlignment="Center"></CheckBox>
@@ -110,7 +110,7 @@
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <Label Content="Odaberi žicu:" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="130"/>
-                            <ComboBox Name="zicaToRemove"   Width="100" ItemsSource="{Binding Path=Zice, UpdateSourceTrigger=PropertyChanged}"></ComboBox>
+                            <ComboBox Name="zicaToRemove"   Width="100" ItemsSource="{Binding Path=Zice}"></ComboBox>
                             <Button Name="removeZica"  Width="40" Margin="10,0,0,0" Command="{Binding RemoveZicaCommand}" CommandParameter="{Binding ElementName=zicaToRemove, Path=SelectedItem}">ukloni</Button>
                             <Button Name="resetAll"  Margin="50,0,0,0" Command="{Binding ResetAllCommand}">reset svih postavki</Button>
                         </StackPanel>

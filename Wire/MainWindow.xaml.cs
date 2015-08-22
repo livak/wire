@@ -1,4 +1,6 @@
 ﻿using System.Windows;
+using System.Windows.Data;
+using Wire.Properties;
 
 namespace Wire
 {
@@ -10,6 +12,11 @@ namespace Wire
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void window_Closed(object sender, System.EventArgs e)
+        {
+            Settings.Default.Save();
         }
     }
 }

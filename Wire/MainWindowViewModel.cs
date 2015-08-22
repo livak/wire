@@ -1,37 +1,101 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using Wire.Infrastructure;
+using Wire.Properties;
 
 namespace Wire
 {
     public class MainWindowViewModel : ViewModeBase
     {
-        public string BrojZavoja { get; set; }
-        public string MaxOdstupanje { get; set; }
-        public string MaxBrojZica { get; set; }
-        public string PovrsinaUtora { get; set; }
+        private Settings settings = Settings.Default;
 
-        string _presjek;
+        public string BrojZavoja
+        {
+            get { return settings.BrojZavoja; }
+            set { settings.BrojZavoja = value; OnPropertyChanged(); }
+        }
+
+        public string MaxOdstupanje
+        {
+            get { return settings.MaxOdstupanje; }
+            set { settings.MaxOdstupanje = value; OnPropertyChanged(); }
+        }
+
+        public string MaxBrojZica
+        {
+            get { return settings.MaxBrojZica; }
+            set { settings.MaxBrojZica = value; OnPropertyChanged(); }
+        }
+
+        public string PovrsinaUtora
+        {
+            get { return settings.PovrsinaUtora; }
+            set { settings.PovrsinaUtora = value; OnPropertyChanged(); }
+        }
+
         public string Presjek
         {
-            get { return _presjek; }
-            set { _presjek = value; OnPropertyChanged(); }
+            get { return settings.Presjek; }
+            set { settings.Presjek = value; OnPropertyChanged(); }
         }
-        public bool Slojnost { get; set; }
 
-        public int From { get; set; }
-        public int To { get; set; }
-        public bool SveKombinacije { get; set; }
+        public bool Slojnost
+        {
+            get { return settings.Slojnost; }
+            set { settings.Slojnost = value; OnPropertyChanged(); }
+        }
 
-        public string NemaZice { get; set; }
+        public int From
+        {
+            get { return settings.From; }
+            set { settings.From = value; OnPropertyChanged(); }
+        }
 
-        public string BrojZica1 { get; set; }
-        public string PromjerZice1 { get; set; }
-        public string BrojZica2 { get; set; }
-        public string PromjerZice2 { get; set; }
+        public int To
+        {
+            get { return settings.To; }
+            set { settings.To = value; OnPropertyChanged(); }
+        }
+
+        public bool SveKombinacije
+        {
+            get { return settings.SveKombinacije; }
+            set { settings.SveKombinacije = value; OnPropertyChanged(); }
+        }
+
+        public string NemaZice
+        {
+            get { return settings.NemaZice; }
+            set { settings.NemaZice = value; OnPropertyChanged(); }
+        }
+
+        public string BrojZica1
+        {
+            get { return settings.BrojZica1; }
+            set { settings.BrojZica1 = value; OnPropertyChanged(); }
+        }
+
+        public string PromjerZice1
+        {
+            get { return settings.PromjerZice1; }
+            set { settings.PromjerZice1 = value; OnPropertyChanged(); }
+        }
+
+        public string BrojZica2
+        {
+            get { return settings.BrojZica2; }
+            set { settings.BrojZica2 = value; OnPropertyChanged(); }
+        }
+
+        public string PromjerZice2
+        {
+            get { return settings.PromjerZice2; }
+            set { settings.PromjerZice2 = value; OnPropertyChanged(); }
+        }
 
         public ObservableCollection<double> _zice;
         public ObservableCollection<double> Zice
@@ -119,16 +183,7 @@ namespace Wire
 
         public MainWindowViewModel()
         {
-            Presjek = 0.7209.ToString();
-            BrojZavoja = 45.ToString();
-            PovrsinaUtora = 80.1.ToString();
-            MaxOdstupanje = 2.ToString();
-            MaxBrojZica = 10.ToString();
-            Slojnost = true;
-            From = 4;
-            To = 29;
             Zice = new ObservableCollection<double>(Configuration.Zice());
-            NemaZice = string.Empty;
         }
 
         public void DoCalculation()
@@ -171,6 +226,8 @@ namespace Wire
         private void DoResetAll()
         {
             Zice = new ObservableCollection<double>(Configuration.GetDefaults());
+            Settings.Default.Reset();
+            NotifyAllPropertiesChanged();
             SaveZice();
         }
         private void SaveZice()
