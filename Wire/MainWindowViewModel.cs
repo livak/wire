@@ -49,6 +49,12 @@ namespace Wire
             set { settings.Slojnost = value; OnPropertyChanged(); }
         }
 
+        public bool Slojnost2
+        {
+            get { return settings.Slojnost2; }
+            set { settings.Slojnost2 = value; OnPropertyChanged(); }
+        }
+
         public int From
         {
             get { return settings.From; }

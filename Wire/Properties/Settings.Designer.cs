@@ -236,5 +236,17 @@ namespace Wire.Properties {
                 this["BrojZica1"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Slojnost2 {
+            get {
+                return ((bool)(this["Slojnost2"]));
+            }
+            set {
+                this["Slojnost2"] = value;
+            }
+        }
     }
 }

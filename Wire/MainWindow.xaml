@@ -67,7 +67,7 @@
                                     <Label Content="Odaberi slojnost:"></Label>
                                     <StackPanel Orientation="Horizontal">
                                         <RadioButton Content="1" IsChecked="{Binding Path=Slojnost}" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                                        <RadioButton Content="2" VerticalAlignment="Center"/>
+                                        <RadioButton Content="2" IsChecked="{Binding Path=Slojnost2}" VerticalAlignment="Center"/>
                                     </StackPanel>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
