@@ -3,100 +3,104 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Threading;
 using Wire.Infrastructure;
 using Wire.Properties;
 
 namespace Wire
 {
+    [DataContract]
     public class MainWindowViewModel : ViewModeBase
     {
-        private Settings settings = Settings.Default;
+        private static Settings settings = Settings.Default;
+        public static object Instance;
 
+        [DataMember]
         public string BrojZavoja
         {
             get { return settings.BrojZavoja; }
             set { settings.BrojZavoja = value; OnPropertyChanged(); }
         }
-
+        [DataMember]
         public string MaxOdstupanje
         {
             get { return settings.MaxOdstupanje; }
             set { settings.MaxOdstupanje = value; OnPropertyChanged(); }
         }
-
+        [DataMember]
         public string MaxBrojZica
         {
             get { return settings.MaxBrojZica; }
             set { settings.MaxBrojZica = value; OnPropertyChanged(); }
         }
-
+        [DataMember]
         public string PovrsinaUtora
         {
             get { return settings.PovrsinaUtora; }
             set { settings.PovrsinaUtora = value; OnPropertyChanged(); }
         }
-
+        [DataMember]
         public string Presjek
         {
             get { return settings.Presjek; }
             set { settings.Presjek = value; OnPropertyChanged(); }
         }
-
+        [DataMember]
         public bool Slojnost
         {
             get { return settings.Slojnost; }
             set { settings.Slojnost = value; OnPropertyChanged(); }
         }
-
+        [DataMember]
         public bool Slojnost2
         {
             get { return settings.Slojnost2; }
             set { settings.Slojnost2 = value; OnPropertyChanged(); }
         }
-
+        [DataMember]
         public int From
         {
             get { return settings.From; }
             set { settings.From = value; OnPropertyChanged(); }
         }
-
+        [DataMember]
         public int To
         {
             get { return settings.To; }
             set { settings.To = value; OnPropertyChanged(); }
         }
-
+        [DataMember]
         public bool SveKombinacije
         {
             get { return settings.SveKombinacije; }
             set { settings.SveKombinacije = value; OnPropertyChanged(); }
         }
-
+        [DataMember]
         public string NemaZice
         {
             get { return settings.NemaZice; }
             set { settings.NemaZice = value; OnPropertyChanged(); }
         }
-
+        [DataMember]
         public string BrojZica1
         {
             get { return settings.BrojZica1; }
             set { settings.BrojZica1 = value; OnPropertyChanged(); }
         }
-
+        [DataMember]
         public string PromjerZice1
         {
             get { return settings.PromjerZice1; }
             set { settings.PromjerZice1 = value; OnPropertyChanged(); }
         }
-
+        [DataMember]
         public string BrojZica2
         {
             get { return settings.BrojZica2; }
             set { settings.BrojZica2 = value; OnPropertyChanged(); }
         }
-
+        [DataMember]
         public string PromjerZice2
         {
             get { return settings.PromjerZice2; }
@@ -124,9 +128,37 @@ namespace Wire
             {   
                 if (doCalculationCommand == null)
                 {
-                    doCalculationCommand = new RelayCommand(DoCalculation);
+                    doCalculationCommand = new RelayCommand(() => DoCalculation());
                 }
                 return doCalculationCommand;
+            }
+        }
+
+        private RelayCommand undoCommand;
+
+        public RelayCommand UndoCommand
+        {
+            get
+            {
+                if (undoCommand == null)
+                {
+                    undoCommand = new RelayCommand(DoUndo, CanUndo);
+                }
+                return undoCommand;
+            }
+        }
+
+        private RelayCommand redoCommand;
+
+        public RelayCommand RedoCommand
+        {
+            get
+            {
+                if (redoCommand == null)
+                {
+                    redoCommand = new RelayCommand(DoRedo, CanRedo);
+                }
+                return redoCommand;
             }
         }
 
@@ -189,11 +221,43 @@ namespace Wire
 
         public MainWindowViewModel()
         {
+            if (Instance == null)
+            {
+                Instance = this;
+            }
             Zice = new ObservableCollection<double>(Configuration.Zice());
+
+            DoCalculation();
         }
 
-        public void DoCalculation()
+        public void DoUndo()
         {
+            Undo();
+            RefreshUndoRedoCanExecute();
+            DoCalculation(saveState: false);
+        }
+
+        public void DoRedo()
+        {
+            Redo();
+            RefreshUndoRedoCanExecute();
+            DoCalculation(saveState: false);
+        }
+
+        private void RefreshUndoRedoCanExecute()
+        {
+            RedoCommand.RaiseCanExecuteChanged();
+            UndoCommand.RaiseCanExecuteChanged();
+        }
+
+        public void DoCalculation(bool saveState = true)
+        {
+            if (saveState)
+            {
+                this.SaveState();
+                RefreshUndoRedoCanExecute();
+            }
+
             var inputParams = new InputParams
             {
                 BrojZavoja = ParseInt(BrojZavoja),

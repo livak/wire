@@ -43,17 +43,24 @@ namespace Wire.Infrastructure
             return _canExecute == null ? true : _canExecute((T)parameter);
         }
 
+        event EventHandler _internalCanExecuteChanged;
         public event EventHandler CanExecuteChanged
         {
             add
             {
                 if (_canExecute != null)
+                {
                     CommandManager.RequerySuggested += value;
+                    _internalCanExecuteChanged += value;
+                }
             }
             remove
             {
                 if (_canExecute != null)
+                {
                     CommandManager.RequerySuggested -= value;
+                    _internalCanExecuteChanged -= value;
+                }
             }
         }
 
@@ -63,6 +70,27 @@ namespace Wire.Infrastructure
         }
 
         #endregion
+
+        /// <summary>
+        /// This method can be used to raise the CanExecuteChanged handler.
+        /// This will force WPF to re-query the status of this command directly.
+        /// </summary>
+        public void RaiseCanExecuteChanged()
+        {
+            if (_canExecute != null)
+                OnCanExecuteChanged();
+        }
+
+        /// <summary>
+        /// This method is used to walk the delegate chain and well WPF that
+        /// our command execution status has changed.
+        /// </summary>
+        protected virtual void OnCanExecuteChanged()
+        {
+            EventHandler eCanExecuteChanged = _internalCanExecuteChanged;
+            if (eCanExecuteChanged != null)
+                eCanExecuteChanged(this, EventArgs.Empty);
+        }
     }
 
     public class RelayCommand : RelayCommand<object>
