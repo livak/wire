@@ -3,7 +3,7 @@ namespace Wire
 {
     public class InputParams
     {
-        public int BrojZavoja { get; set; }
+        public double BrojZavoja { get; set; }
         public int MaxOdstupanje { get; set; }
         public int MaxBrojZica { get; set; }
         public double PovrsinaUtora { get; set; }

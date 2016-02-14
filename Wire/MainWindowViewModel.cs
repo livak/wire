@@ -260,7 +260,7 @@ namespace Wire
 
             var inputParams = new InputParams
             {
-                BrojZavoja = ParseInt(BrojZavoja),
+                BrojZavoja = ParseDouble(BrojZavoja),
                 MaxBrojZica = ParseInt(MaxBrojZica),
                 MaxOdstupanje = ParseInt(MaxOdstupanje),
                 MaxRazmak = SveKombinacije ? 3 : 1,
